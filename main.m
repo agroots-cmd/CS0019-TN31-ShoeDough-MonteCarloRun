@@ -8,6 +8,7 @@ end
 
 num_horses = 6;
 dt = 0.5;
+default_trials = 200;
 seed_base = 100;
 scenarios = scenario_config();
 
@@ -78,8 +79,7 @@ while true
         end
     elseif choice == 4
         if isempty(mc)
-            num_trials = prompt_trials();
-            mc = run_monte_carlo(horses, scen, num_trials, seed_base + scen_step, dt);
+            mc = run_monte_carlo(horses, scen, default_trials, seed_base + scen_step, dt);
         end
 
         [~, fav_idx] = max([horses.v_base]);
@@ -118,7 +118,7 @@ while true
 
         plot_results(horses, ordered_scens, mc_by_scen, stats_by_scen);
     elseif choice == 6
-        validate_plan();[cite: 8]
+        validate_plan();
     elseif choice == 7
         break;
     else
