@@ -4,7 +4,7 @@ function passed = validate_plan()
     scenarios = scenario_config();
     base_scen = scenarios(1);
 
-    fprintf('Running Section 11 Validation Plan...\n');
+    fprintf('Running Validation Plan...\n');
 
     % Determinism check, variance = 0 should mean fastest horse always wins
     horses_det = horse_params(4);
@@ -88,7 +88,7 @@ function passed = validate_plan()
     diff_10k_100k = max(abs(st_100k.win_probs - st_10k.win_probs));
     diff_1k_100k  = max(abs(st_100k.win_probs - st_1k.win_probs));
     assert(diff_10k_100k <= diff_1k_100k + 0.05, 'Convergence check failed: error did not stabilize');
-    fprintf('[PASS] Convergence check (max diff 10k vs 100k: %.4f)\n', diff_10k_100k);
+    fprintf('[PASS] Convergence check: %.4f)\n', diff_10k_100k);
 
     % Scenario check, doubling drain in Mixed scenario shifts results toward high-stamina horses
     if ~isempty(idx_mix)
@@ -108,5 +108,5 @@ function passed = validate_plan()
             st_mix_1x.win_probs(2)*100, st_mix_2x.win_probs(2)*100);
     end
 
-    fprintf('Section 11 validation plan PASSED.\n');
+    fprintf('Validation plan PASSED.\n');
 end
