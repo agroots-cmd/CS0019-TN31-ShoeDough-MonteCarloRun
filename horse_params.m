@@ -17,13 +17,13 @@ function horses = horse_params(num_horses)
         end
 
         % Randomized base stats
-        raw_speed = 16.0 + (18.0 - 16.0) * rand();       
-        raw_stamina = 80.0 + (120.0 - 80.0) * rand();    
-        raw_drain = 0.78 + (1.06 - 0.78) * rand();       
-        step_sigma = 0.02 + (0.08 - 0.02) * rand();      
+        raw_speed   = 16.8 + (17.0 - 16.6) * rand();
+        raw_stamina = 95.0 + (100.0 - 92.0) * rand();
+        raw_drain   = 0.70 + (0.86 - 0.82) * rand();
+        step_sigma  = 0.02 + (0.045 - 0.02) * rand();    
 
         % "good day / bad day" modifier (variance)
-        day_modifier = 1.0 + 0.02 * randn();
+        day_modifier = max(0.96, min(1.04, 1.0 + 0.015 * randn()));
         effective_v_base = min(max(raw_speed * day_modifier, 15.5), 18.5);
 
         horses(i).base_speed = raw_speed;
