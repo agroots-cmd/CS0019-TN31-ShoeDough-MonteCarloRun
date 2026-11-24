@@ -1,11 +1,35 @@
-function horses = horse_params()
+function horses = horse_params(num_horses)
 
-    horses = struct(...
-        'id',          {1, 2, 3, 4, 5, 6, 7}, ...
-        'name',        {'Silence Suzuka', 'Mejiro McQueen', 'Gold Ship', 'Symboli Rudolf', 'Oguri Cap', 'Tokai Teio', 'Maruzensky'}, ...
-        'v_base',      {17.8, 16.2, 17.1, 17.0, 17.5, 17.3, 18.0}, ... % m/s (16 to 18)
-        'max_stamina', {86.0, 120.0, 112.0, 105.0, 98.0, 100.0, 80.0}, ... % units (80 to 120)
-        'k_drain',     {1.15, 0.80, 0.90, 0.92, 0.98, 1.00, 1.22}, ... % units/sec
-        'sigma',       {0.035, 0.022, 0.080, 0.020, 0.038, 0.042, 0.030} ... % fraction of speed (0.02 to 0.08)
-    );
+    if nargin < 1 || isempty(num_horses)
+        num_horses = 6;
+    end
+
+    name_pool = {'Silence Suzuka', 'Mejiro McQueen', 'Gold Ship', 'Symboli Rudolf', ...
+                 'Oguri Cap', 'Tokai Teio', 'Maruzensky', 'Special Week'};
+    horses = struct([]);
+
+    for i = 1:num_horses
+        horses(i).id = i;
+        if i <= length(name_pool)
+            horses(i).name = name_pool{i};
+        else
+            horses(i).name = sprintf('Horse %d', i);
+        end
+
+        % Randomized base stats
+        raw_speed = 16.0 + (18.0 - 16.0) * rand();       
+        raw_stamina = 80.0 + (120.0 - 80.0) * rand();    
+        raw_drain = 0.78 + (1.06 - 0.78) * rand();       
+        step_sigma = 0.02 + (0.08 - 0.02) * rand();      
+
+        % "good day / bad day" modifier (variance)
+        day_modifier = 1.0 + 0.02 * randn();
+        effective_v_base = min(max(raw_speed * day_modifier, 15.5), 18.5);
+
+        horses(i).base_speed = raw_speed;
+        horses(i).v_base = effective_v_base;
+        horses(i).max_stamina = raw_stamina;
+        horses(i).k_drain = raw_drain;
+        horses(i).sigma = step_sigma;
+    end
 end
